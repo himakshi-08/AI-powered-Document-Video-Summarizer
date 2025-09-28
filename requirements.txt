@@ -1,0 +1,50 @@
+Download miniconda
+
+conda create -n bart-env 
+conda activate bart-env
+
+# Core NLP packages
+conda install -c conda-forge -y transformers datasets sentencepiece accelerate
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip install tensorboard
+
+# Preprocessing tools
+conda install -c conda-forge -y spacy beautifulsoup4 nltk scikit-learn
+
+# Additional utilities
+conda install -c conda-forge -y tqdm pandas numpy
+
+# Install spaCy language model
+python -m spacy download en_core_web_sm
+
+# for evaluation
+pip install rouge-score nltk  
+
+# PDF processing
+pip install pdfplumber
+pip install pymupdf
+
+# Word docs
+pip install python-docx
+
+# scrapping
+pip install newspaper3k requests selenium
+pip install lxml_html_clean newspaper3k
+
+pip install tokenizers
+pip install evaluate
+
+# Core dependencies (with version pinning where needed)
+pip install streamlit>=1.25.0 torch requests yt-dlp ffmpeg-python
+
+# Handle whisper/openai-whisper naming conflict (install only one)
+pip install openai-whisper  # Preferred package name
+
+# FFmpeg system dependency (separate installation)
+# For Windows (choco package manager):
+choco install ffmpeg
+
+
+
+
+

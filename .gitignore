@@ -1,0 +1,10 @@
+__pycache__/
+*.pt
+*.bin
+*.safetensors
+*.pkl
+*.tfevents.*
+logs/
+training and additional files/
+bart-finetuned-mediasum/
+partial_model/
