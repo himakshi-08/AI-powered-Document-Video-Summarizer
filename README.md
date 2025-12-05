@@ -2,6 +2,33 @@
 
 A comprehensive, intelligent summarization suite that leverages cutting-edge AI models to extract, condense, and summarize content from multiple sources including articles, videos, PDFs, and documents.
 
+---
+
+## ⚡ Quick Start (TL;DR)
+
+```bash
+# 1. Prerequisites: Install FFmpeg, Python 3.8+, and Git
+
+# 2. Clone & Setup (5 minutes)
+git clone https://github.com/himakshi-08/AI-powered-Document-Video-Summarizer.git
+cd AI-powered-Document-Video-Summarizer
+conda create -n bart-env python=3.10 -y
+conda activate bart-env
+
+# 3. Install Dependencies (10-20 minutes)
+conda install -c conda-forge -y transformers datasets sentencepiece accelerate spacy beautifulsoup4 nltk scikit-learn tqdm pandas numpy
+python -m spacy download en_core_web_sm
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip install streamlit>=1.25.0 yt-dlp ffmpeg-python openai-whisper rouge-score pdfplumber pymupdf python-docx newspaper3k selenium tokenizers evaluate sentence-transformers
+
+# 4. Run (1 minute)
+streamlit run main_app.py
+```
+
+**Result:** App opens at `http://localhost:8501` ✅
+
+---
+
 ## 📋 Overview
 
 This project combines **abstractive** and **extractive** summarization techniques powered by fine-tuned BART models and transformer-based neural networks to provide accurate, coherent summaries of diverse content types. Whether you're processing news articles, YouTube videos, academic papers, or business documents, this tool intelligently condenses information while preserving key insights.
@@ -34,98 +61,205 @@ This project combines **abstractive** and **extractive** summarization technique
 ## 🏗️ Project Structure
 
 ```
-AI summarizer/
-├── main_app.py                          # Main Streamlit application
-├── abstractive_model.py                 # Abstractive summarization engine
-├── extractive_summarizer.py             # Extractive summarization logic
-├── core_scraper.py                      # Web article scraping
-├── core_transcriber.py                  # Video transcription & processing
-├── text_extraction.py                   # PDF/Document text extraction
-├── preprocess.py                        # Text preprocessing utilities
-├── rouge_evaluation.py                  # Evaluation metrics
-├── ui_styles.py                         # Custom CSS styling
-├── requirements.txt                     # Dependencies
+AI-powered-Document-Video-Summarizer/
 │
-├── bart-finetuned-mediasum/             # Fine-tuned BART model
-│   ├── config.json
-│   ├── model.safetensors
-│   └── checkpoint-4500/
+├── 📄 Core Application Files
+├── ├── main_app.py                      # Main Streamlit web application
+├── ├── abstractive_model.py             # Abstractive summarization engine (BART)
+├── ├── extractive_summarizer.py         # Extractive summarization logic
+├── ├── core_scraper.py                  # Web article scraping utilities
+├── ├── core_transcriber.py              # Video transcription & audio extraction
+├── ├── text_extraction.py               # PDF/Document text extraction
+├── ├── preprocess.py                    # Text preprocessing & normalization
+├── ├── rouge_evaluation.py              # ROUGE metrics for evaluation
+├── ├── ui_styles.py                     # Custom Streamlit CSS styling
 │
-├── partial_model/                       # Alternative model variant
+├── 📦 Models & Weights
+├── ├── bart-finetuned-mediasum/         # Fine-tuned BART model (MediaSum)
+│   ├── ├── config.json
+│   ├── ├── generation_config.json
+│   ├── ├── model.safetensors
+│   ├── ├── tokenizer_config.json
+│   ├── ├── vocab.json
+│   ├── ├── merges.txt
+│   ├── ├── special_tokens_map.json
+│   ├── └── checkpoint-4500/             # Training checkpoint (4500 steps)
+│   │
+│   └── partial_model/                   # Alternative pre-trained model variant
+│       ├── config.json
+│       ├── generation_config.json
+│       ├── model.safetensors
+│       ├── tokenizer_config.json
+│       ├── vocab.json
+│       ├── merges.txt
+│       └── special_tokens_map.json
 │
-├── logs/                                # TensorBoard training logs
+├── 📊 Training & Logs
+├── ├── logs/                            # TensorBoard event files
+│   ├── events.out.tfevents.*            # Training metrics and loss curves
 │
-└── training and additional files/       # Training scripts & utilities
-    ├── abstractive_model_training.py
-    ├── transcript_abstractive_model_training.py
-    ├── extractive_model_training.ipynb
-    ├── api_service.py
-    ├── scrapper.py
-    ├── transcription.py
-    └── download_resource.py
+├── 🛠️ Training & Utilities
+├── └── training and additional files/
+│   ├── abstractive_model_training.py    # BART model fine-tuning script
+│   ├── transcript_abstractive_model_training.py  # Video transcript training
+│   ├── extractive_model_training.ipynb  # Jupyter notebook for extractive training
+│   ├── api_service.py                   # REST API service (optional)
+│   ├── scrapper.py                      # Advanced scraping utilities
+│   ├── transcription.py                 # Audio transcription helpers
+│   └── download_resource.py             # Model/data download utilities
+│
+├── 📋 Configuration
+├── ├── requirements.txt                 # Python dependencies
+├── ├── README.md                        # This documentation
+│
+└── 📁 Cache
+    └── __pycache__/                     # Python cache directory
 ```
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Python 3.8+
-- FFmpeg (for video processing)
-- CUDA 11.8+ (optional, for GPU acceleration)
-- Miniconda or Anaconda
+**Required:**
+- ✅ Python 3.8 or higher
+- ✅ Miniconda or Anaconda
+- ✅ FFmpeg (system-level)
+- ✅ Git (for cloning repository)
 
-### Installation
+**Optional:**
+- 🔧 CUDA 11.8+ (for GPU acceleration - significantly faster)
+- 🔧 Nvidia GPU (for GPU support)
 
-1. **Clone the repository**
+### System-Level Installation (FFmpeg)
+
+**FFmpeg is required for video processing. Install based on your OS:**
+
+```powershell
+# Windows (using Chocolatey)
+choco install ffmpeg
+
+# Or if you don't have chocolatey, download from: https://ffmpeg.org/download.html
+```
+
+```bash
+# macOS (using Homebrew)
+brew install ffmpeg
+```
+
+```bash
+# Linux (Ubuntu/Debian)
+sudo apt-get install ffmpeg
+
+# Linux (Fedora/RHEL)
+sudo yum install ffmpeg
+```
+
+### Step-by-Step Installation
+
+#### Step 1: Clone the Repository
 ```bash
 git clone https://github.com/himakshi-08/AI-powered-Document-Video-Summarizer.git
 cd AI-powered-Document-Video-Summarizer
 ```
 
-2. **Create and activate conda environment**
+#### Step 2: Create Conda Environment
 ```bash
 conda create -n bart-env python=3.10
 conda activate bart-env
 ```
 
-3. **Install core NLP packages**
+#### Step 3: Install Core Dependencies (NLP & Deep Learning)
 ```bash
+# Install transformers, datasets, and acceleration libraries
 conda install -c conda-forge -y transformers datasets sentencepiece accelerate
+
+# Install PyTorch (choose based on your setup)
+# For GPU (CUDA 11.8):
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
+# For CPU only (if no GPU):
+pip install torch torchvision torchaudio
+
+# Install TensorBoard for training monitoring
 pip install tensorboard
 ```
 
-4. **Install preprocessing tools**
+#### Step 4: Install NLP & Preprocessing Tools
 ```bash
-conda install -c conda-forge -y spacy beautifulsoup4 nltk scikit-learn
+conda install -c conda-forge -y spacy beautifulsoup4 nltk scikit-learn tqdm pandas numpy
+
+# Download spaCy English model
 python -m spacy download en_core_web_sm
 ```
 
-5. **Install additional dependencies**
+#### Step 5: Install Web & Application Framework
 ```bash
-conda install -c conda-forge -y tqdm pandas numpy
-pip install streamlit>=1.25.0 torch requests yt-dlp ffmpeg-python
-pip install openai-whisper rouge-score pdfplumber pymupdf python-docx
-pip install newspaper3k requests selenium lxml_html_clean tokenizers evaluate
+pip install streamlit>=1.25.0 requests yt-dlp ffmpeg-python
+```
+
+#### Step 6: Install Audio & Document Processing
+```bash
+# Audio transcription
+pip install openai-whisper
+
+# Document extraction
+pip install pdfplumber pymupdf python-docx
+
+# Web scraping
+pip install newspaper3k selenium lxml_html_clean
+
+# ML evaluation & utilities
+pip install rouge-score tokenizers evaluate
+```
+
+#### Step 7: Install Semantic & Embedding Models
+```bash
 pip install sentence-transformers
 ```
 
-6. **Install FFmpeg**
-   - **Windows**: `choco install ffmpeg`
-   - **macOS**: `brew install ffmpeg`
-   - **Linux**: `sudo apt-get install ffmpeg`
+#### Step 8: Verify Installation
+```bash
+python -c "import torch; print('PyTorch:', torch.__version__); print('CUDA Available:', torch.cuda.is_available())"
+python -c "import transformers; print('Transformers:', transformers.__version__)"
+python -c "import streamlit; print('Streamlit:', streamlit.__version__)"
+```
 
-### Quick Start
+### Quick Install (All-in-One Command)
+
+If you prefer to install everything at once:
 
 ```bash
-# Activate the conda environment
+conda create -n bart-env python=3.10 -y && \
+conda activate bart-env && \
+conda install -c conda-forge -y transformers datasets sentencepiece accelerate spacy beautifulsoup4 nltk scikit-learn tqdm pandas numpy && \
+python -m spacy download en_core_web_sm && \
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118 && \
+pip install tensorboard streamlit>=1.25.0 requests yt-dlp ffmpeg-python openai-whisper rouge-score && \
+pip install pdfplumber pymupdf python-docx newspaper3k selenium lxml_html_clean tokenizers evaluate sentence-transformers
+```
+
+### Launch the Application
+
+```bash
+# Make sure you're in the project directory and conda environment is activated
 conda activate bart-env
 
 # Run the Streamlit application
 streamlit run main_app.py
 ```
 
-The application will open at `http://localhost:8501`
+The application will automatically open at `http://localhost:8501` in your default browser.
+
+### Verify Everything Works
+
+To test if the installation is complete:
+```bash
+# Download and cache Whisper model (first-time only, ~140MB)
+python -c "import whisper; whisper.load_model('base')"
+
+# Load BART model
+python -c "from transformers import AutoModelForSeq2SeqLM, AutoTokenizer; model = AutoModelForSeq2SeqLM.from_pretrained('facebook/bart-large')"
+```
 
 ## 📖 Usage Guide
 
@@ -258,29 +392,125 @@ Located in `training and additional files/`:
 
 ## 🐛 Troubleshooting
 
-### FFmpeg Not Found
-```bash
-# Windows
-choco install ffmpeg
+### Installation Issues
 
-# Or add to system PATH if already installed
+#### Python Version Error
+```bash
+# Check your Python version
+python --version
+
+# If version < 3.8, update Python or use a new conda environment
+conda create -n bart-env python=3.10 -y
 ```
 
-### Whisper Model Download Issues
+#### FFmpeg Not Found
 ```bash
-# Force re-download
+# Windows - Verify FFmpeg is in PATH
+ffmpeg -version
+
+# If not found, reinstall or add to system PATH
+# Download: https://ffmpeg.org/download.html
+```
+
+#### Conda Command Not Found
+```bash
+# Install Miniconda from: https://docs.conda.io/projects/miniconda/en/latest/
+# Or add Anaconda/Miniconda to your system PATH
+```
+
+#### CUDA Not Available (for GPU users)
+```bash
+# Check if GPU is detected
+nvidia-smi
+
+# If not working, download appropriate CUDA from:
+# https://developer.nvidia.com/cuda-downloads
+
+# Reinstall PyTorch for your CUDA version
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+```
+
+### Runtime Issues
+
+#### Whisper Model Download Fails
+```bash
+# Force model download to ~/.cache/whisper
 python -c "import whisper; whisper.load_model('base')"
+
+# Or manually download from Hugging Face Hub
 ```
 
-### Out of Memory (CUDA)
-- Reduce batch size in settings
-- Use CPU mode: `device="cpu"`
-- Process shorter documents
+#### Out of Memory (CUDA)
+```bash
+# Use CPU mode instead
+# Edit main_app.py and set device="cpu"
 
-### Slow Performance
-- Enable GPU acceleration
-- Check CUDA availability: `nvidia-smi`
-- Use fast mode for quick summaries
+# Or reduce batch size in settings
+```
+
+#### Streamlit Port Already in Use
+```bash
+# Run on different port
+streamlit run main_app.py --server.port 8502
+```
+
+#### Slow Summarization on CPU
+- Install GPU support (CUDA 11.8+)
+- Use shorter documents
+- Enable fast mode in UI
+- Reduce max summary length
+
+### Verification Checklist
+
+Run these commands to verify everything works:
+
+```bash
+# 1. Python & Conda
+python --version
+conda --version
+
+# 2. FFmpeg
+ffmpeg -version
+
+# 3. PyTorch & GPU
+python -c "import torch; print(f'PyTorch: {torch.__version__}'); print(f'CUDA Available: {torch.cuda.is_available()}')"
+
+# 4. Key Libraries
+python -c "import streamlit; import transformers; import whisper; import spacy; print('✅ All core libraries loaded successfully')"
+
+# 5. Models
+python -c "from transformers import AutoTokenizer; t = AutoTokenizer.from_pretrained('facebook/bart-large'); print('✅ BART model accessible')"
+
+# 6. Run App
+streamlit run main_app.py
+```
+
+### Common Error Messages & Solutions
+
+| Error | Solution |
+|-------|----------|
+| `ModuleNotFoundError: No module named 'streamlit'` | Run: `pip install streamlit>=1.25.0` |
+| `ffmpeg: command not found` | Install FFmpeg via system package manager |
+| `No module named 'torch'` | Run: `pip install torch` (or see PyTorch installation above) |
+| `CUDA out of memory` | Reduce batch size or use CPU mode |
+| `Cannot find spacy model` | Run: `python -m spacy download en_core_web_sm` |
+| `Whisper download fails` | Check internet connection or use cached version |
+
+## 📋 System Requirements Summary
+
+### Minimum (CPU-Only)
+- Python 3.8+
+- 4GB RAM
+- 2GB storage (models)
+- ~30 minutes installation time
+
+### Recommended (GPU-Accelerated)
+- Python 3.10
+- Nvidia GPU with 4GB+ VRAM
+- 16GB+ system RAM
+- 8GB storage (models)
+- CUDA 11.8 compatible GPU
+- ~15 minutes installation time (much faster inference)
 
 ## 📦 Dependencies
 
@@ -304,8 +534,5 @@ Contributions are welcome! Areas for enhancement:
 - Enhanced UI/UX features
 - Additional source types
 
-## 👨‍💻 Author
-
-**Himakshi-08** - AI-powered Document & Video Summarizer
 
 
