@@ -31,40 +31,6 @@ This project combines **abstractive** and **extractive** summarization technique
 - GPU acceleration support
 - ROUGE evaluation metrics for quality assessment
 
-## 🏗️ Project Structure
-
-```
-AI summarizer/
-├── main_app.py                          # Main Streamlit application
-├── abstractive_model.py                 # Abstractive summarization engine
-├── extractive_summarizer.py             # Extractive summarization logic
-├── core_scraper.py                      # Web article scraping
-├── core_transcriber.py                  # Video transcription & processing
-├── text_extraction.py                   # PDF/Document text extraction
-├── preprocess.py                        # Text preprocessing utilities
-├── rouge_evaluation.py                  # Evaluation metrics
-├── ui_styles.py                         # Custom CSS styling
-├── requirements.txt                     # Dependencies
-│
-├── bart-finetuned-mediasum/             # Fine-tuned BART model
-│   ├── config.json
-│   ├── model.safetensors
-│   └── checkpoint-4500/
-│
-├── partial_model/                       # Alternative model variant
-│
-├── logs/                                # TensorBoard training logs
-│
-└── training and additional files/       # Training scripts & utilities
-    ├── abstractive_model_training.py
-    ├── transcript_abstractive_model_training.py
-    ├── extractive_model_training.ipynb
-    ├── api_service.py
-    ├── scrapper.py
-    ├── transcription.py
-    └── download_resource.py
-```
-
 ## 🚀 Getting Started
 
 ### Prerequisites
